@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>litterae.space</title>
+  <link rel="icon" type="image/x-icon" href="/Users/Kamila/Downloads/favicon.ico">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-fJwrC76hXJW4jyFVG6nKjK1YphP/lYWSzY4/6Ia1nPR4jBnhlX3DZgxuTr8s/YFS16dUC7umQE0glMzwMkpZTQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    .card-p {
+      position: relative;
+      overflow: hidden;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .zoom-in {
+    transform: scale(1.1);
+  }
+
+  </style>
+</head>
+<body class="podcast">
+  <div class="container-p">
+    <h1 class="part-p">Recommended Podcasts</h1>
+    <div class="row mt-5">
+      <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="card-p">
+          <img class="card-img-top-p" src="https://i.scdn.co/image/783d3765c603c41c6e9dbfb2c39b8abe5472d664" alt="Therapy thoughts">
+          <div class="card-body-p">
+            <h5 class="card-title-p">Therapy thoughts</h5>
+            <p class="card-text-p">by Tiffany Roe</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="card-p">
+          <img class="card-img-top-p" src="https://is2-ssl.mzstatic.com/image/thumb/Podcasts122/v4/66/48/60/664860e4-a7ab-8c61-12ee-db94b7f49387/mza_7016657734866761556.jpg/1200x1200bb.jpg" alt="Я справляюсь">
+          <div class="card-body-p">
+            <h5 class="card-title-p">Я справляюсь</h5>
+            <p class="card-text-p">by Maulida Imanova</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="card-p">
+          <img class="card-img-top-p" src="https://i.scdn.co/image/ab6765630000ba8a902fb8581312d56b5dfd1e7f" alt="In Your Feelings">
+          <div class="card-body-p">
+            <h5 class="card-title-p">In Your Feelings</h5>
+            <p class="card-text-p">by Bianca</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="card-p">
+          <img class="card-img-top-p" src="https://i.scdn.co/image/b9cb58e2f094ed8cff9f5ede637d1fd5f6b8f35c" alt="Unspoken thoughts">
+          <div class="card-body-p">
+            <h5 class="card-title-p">Unspoken thoughts</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="card-p">
+          <img class="card-img-top-p" src="https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded/407094/407094-1568050000185-c4a6f94b8581d.jpg" alt="The Depression Diaries">
+    <div class="card-body-p">
+     <h5 class="card-title-p">The Depression Diaries</h5>
+          </div>
+        </div>
+      </div>
+     </div>
+     </div>
+   <script src="script.js"></script>
+   <button class="btn btn-primary btn-block" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Main Page</button>
+
+   <script>
+     function goBack() {
+       window.location.href = 'index.html'; // Replace 'index.html' with the URL of your main page
+     }
+   </script>
+   
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('.card-p').hover(
+        function() {
+          $(this).addClass('zoom-in');
+        },
+        function() {
+          $(this).removeClass('zoom-in');
+        }
+      );
+    });
+  </script>
+</body>
+</html>

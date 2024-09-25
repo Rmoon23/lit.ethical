@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Post Example</title>
+  <style>
+    /* CSS Styles */
+    body {
+      background-color: #c9dbb2;
+      color: #00425a;
+    }
+
+    .container {
+      background-color: #c9dbb2;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .post {
+      background-color: #F6FFDE;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+
+    .post h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .post p {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .post .author {
+      font-style: italic;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Posts</h1>
+    <div id="posts-container"></div>
+  </div>
+
+  <script>
+    // Function to retrieve and display the saved messages
+    function displayMessages() {
+      const postsContainer = document.getElementById('posts-container');
+      let messages = localStorage.getItem('messages');
+      if (!messages) {
+        postsContainer.innerHTML = '<p>No messages found.</p>';
+        return;
+      }
+
+      messages = JSON.parse(messages);
+
+      if (messages.length === 0) {
+        postsContainer.innerHTML = '<p>No messages found.</p>';
+        return;
+      }
+
+      // Loop through the messages and generate HTML for each message
+      let postsHTML = '';
+      for (let i = messages.length - 1; i >= 0; i--) {
+        const message = messages[i];
+        const postHTML = `
+          <div class="post">
+            <h2>${message.name}</h2>
+            <p>${message.message}</p>
+            <p class="author">Written on ${new Date(message.timestamp).toLocaleString()}</p>
+          </div>
+        `;
+        postsHTML += postHTML;
+      }
+
+      postsContainer.innerHTML = postsHTML;
+    }
+
+    // Call the displayMessages function when the page loads
+    document.addEventListener('DOMContentLoaded', displayMessages);
+  </script>
+</body>
+</html>
