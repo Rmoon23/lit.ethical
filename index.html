@@ -41,7 +41,6 @@
       </div>
     </nav>
   </header>
-  
 
   <div id="top">
     <h1>Welcome to Litterae!</h1>
@@ -52,8 +51,8 @@
     <audio id="myAudio" src="/Users/Kamila/Downloads/the-last-piano-112677.mp3"></audio>
 
     <button id="playButton" onclick="toggleAnimationAndSound()" class="animate__animated animate__bounce">Play</button>
-  
   </div>
+  
   <div id="share">
     <div class="container-fluid">
       <div class="row header-t">
@@ -78,11 +77,9 @@
     </div>
   </div>
   
-
   <div id="overview">
     <h2>Recommendations</h2>
     <h4>If you're interested, you can learn even more from here.</h4>
-  
     <div class="container text-center">
       <div class="row mt-5">
         <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
@@ -117,9 +114,8 @@
     </div>
   </div>
   
-
   <div class="foot"> 
-     <footer class="text-center text-lg-start text-white" style="background-color: #617A55">
+    <footer class="text-center text-lg-start text-white" style="background-color: #617A55">
       <div class="container p-4 pb-0">
         <section>
           <div class="row">
@@ -163,64 +159,70 @@
             </div>
           </div>
         </section>
-        <hr class="my-3">
-        <section class="p-3 pt-0">
-          <div class="row d-flex align-items-center">
-            <div class="col-md-7 col-lg-8 text-center text-md-start">
-              <div class="p-3">
-                © 2023 Litterae.space. All rights reserved.
-              </div>
-            </div>
-            <div class="col-md-5 col-lg-4 ml-lg-0 text-center text-md-end">
-              <a class="btn btn-outline-light btn-floating m-1" href="https://www.facebook.com" role="button"><i class="fab fa-facebook-f"></i></a>
-              <a class="btn btn-outline-light btn-floating m-1" href="https://twitter.com" role="button"><i class="fab fa-twitter"></i></a>
-              <a class="btn btn-outline-light btn-floating m-1" href="https://www.google.com" role="button"><i class="fab fa-google"></i></a>
-              <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com" role="button"><i class="fab fa-instagram"></i></a>
-            </div>
-          </div>
-        </section>
+      </div>
+      <div class="text-center p-3" style="background-color: rgba(255, 255, 255, 0.1)">
+        © 2024 Litterae
       </div>
     </footer>
   </div>
 
-  <script src="script.js"></script>
   <script>
-    function changeLanguage(lang) {
-      document.getElementById('html-tag').setAttribute('lang', lang);
+    function slowScroll(target) {
+      const element = document.querySelector(target);
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  </script>
 
-<script>
-  document.getElementById('litterae').addEventListener('submit', function (e) {
-    e.preventDefault(); // Prevent form submission
+    function toggleAnimationAndSound() {
+      const audio = document.getElementById('myAudio');
+      const playButton = document.getElementById('playButton');
+      const animationContainer = document.getElementById('animationContainer');
 
-    // Get the form values
-    var nameInput = document.getElementById('name');
-    var messageInput = document.getElementById('message');
+      if (audio.paused) {
+        audio.play();
+        animationContainer.classList.add('animate__animated', 'animate__bounce');
+        playButton.innerText = "Pause";
+      } else {
+        audio.pause();
+        animationContainer.classList.remove('animate__animated', 'animate__bounce');
+        playButton.innerText = "Play";
+      }
+    }
 
-    var name = nameInput.value;
-    var message = messageInput.value;
-    // Get the existing messages from local storage or create an empty array
-    var messages = JSON.parse(localStorage.getItem('messages')) || [];
+    // Vulnerable Code: Submitting the form without sanitization
+    document.getElementById('litterae').addEventListener('submit', function (e) {
+      e.preventDefault(); // Prevent form submission
 
-    // Add the new message to the array
-    messages.push({ name: name, message: message });
+      var nameInput = document.getElementById('name');
+      var messageInput = document.getElementById('message');
 
-    // Sort the messages array from newest to oldest based on timestamp
-    messages.sort(function (a, b) {
-      return new Date(b.timestamp) - new Date(a.timestamp);
+      var name = nameInput.value; // Directly use raw input
+      var message = messageInput.value; // Directly use raw input
+
+      // Get the existing messages from local storage or create an empty array
+      var messages = JSON.parse(localStorage.getItem('messages')) || [];
+
+      // Add the new message to the array (no escaping or validation)
+      messages.push({ name: name, message: message });
+
+      // Save the updated messages array to local storage
+      localStorage.setItem('messages', JSON.stringify(messages));
+
+      // Redirect to posts.html (which will potentially display harmful scripts)
+      window.location.href = 'posts.html';
     });
 
-    // Save the updated messages array to local storage
-    localStorage.setItem('messages', JSON.stringify(messages));
+    // Display messages on posts.html
+    window.onload = function() {
+      var messages = JSON.parse(localStorage.getItem('messages')) || [];
+      var messageContainer = document.getElementById('messageContainer');
 
-    // Redirect to posts.html
-    window.location.href = 'posts.html';
-  });
-</script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
-
+      messages.forEach(function(msg) {
+        // Directly append raw HTML, making it vulnerable to XSS
+        var messageElement = document.createElement('div');
+        messageElement.innerHTML = `<strong>${msg.name}:</strong> ${msg.message}`; // No escaping
+        messageContainer.appendChild(messageElement);
+      });
+    };
+  </script>
 </body>
 </html>
