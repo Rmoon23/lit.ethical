@@ -18,7 +18,7 @@
 </head>
 <body>
   <header class="fixed-top">
-    <nav class="navbar navbar-expand-md navbar-light" >
+    <nav class="navbar navbar-expand-md navbar-light">
       <a class="navbar-brand" href="#" onclick="slowScroll('#top')">Litterae</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -63,56 +63,57 @@
       <div class="alert alert-dark" role="alert">
         A simple reminder alert—try to be polite with others!
       </div>
-      <form id="litterae" name="litterae" method="post" action="posts.html">
+      <form id="litterae" name="litterae" method="post" action="submit_message.php">
         <fieldset>
           <div class="form-group">
             <input type="text" class="form-2control" id="name" name="name" placeholder="Your Pseudonym">
           </div>
           <div class="form-group">
-            <input type="text" class="form-1control" id="message" name="Litterae" placeholder="Write here...">
+            <input type="text" class="form-1control" id="message" name="message" placeholder="Write here...">
             <button type="submit" class="btn btn-primary b1b">Send</button>
           </div>
         </fieldset>
       </form>
     </div>
   </div>
-  
-  <div id="overview">
-    <h2>Recommendations</h2>
-    <h4>If you're interested, you can learn even more from here.</h4>
-    <div class="container text-center">
-      <div class="row mt-5">
-        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-          <div class="card-r">
-            <h4>Videos</h4>
-            <img src="https://cdn.pixabay.com/photo/2016/09/21/11/31/youtube-1684601__480.png" class="img-fluid" alt="">
-            <a href="videos.html" class="btn btn-primary btn-block">Show videos</a>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-          <div class="card-r">
-            <h4>Articles</h4>
-            <img src="https://cdn.pixabay.com/photo/2017/06/30/03/34/gui-2457113__480.png" class="img-fluid" alt="" />
-            <a href="articles.html" class="btn btn-primary btn-block">Show articles</a>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-          <div class="card-r">
-            <h4>Books</h4>
-            <img src="https://cdn.pixabay.com/photo/2023/01/01/23/37/woman-7691013__480.jpg" class="img-fluid" alt="" />
-            <a href="books.html" class="btn btn-primary btn-block">Show books</a>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-          <div class="card-r">
-            <h4>Podcasts</h4>
-            <img src="https://cdn.pixabay.com/photo/2023/03/30/02/48/puppet-7886702__480.jpg" class="img-fluid" alt="" />
-            <a href="podcasts.html" class="btn btn-primary btn-block">Show podcasts</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+
+  <div id="messageContainer"></div>
+
+  <script>
+    // Получаем сообщения из get_messages.php
+    fetch('get_messages.php')
+        .then(response => response.json())
+        .then(data => {
+            const messageContainer = document.getElementById('messageContainer');
+            data.forEach(msg => {
+                const div = document.createElement('div');
+                div.innerHTML = `<strong>${msg.name}:</strong> ${msg.message}`;
+                messageContainer.appendChild(div);
+            });
+        })
+        .catch(error => console.error('Ошибка:', error));
+    
+    function slowScroll(target) {
+      const element = document.querySelector(target);
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function toggleAnimationAndSound() {
+      const audio = document.getElementById('myAudio');
+      const playButton = document.getElementById('playButton');
+      const animationContainer = document.getElementById('animationContainer');
+
+      if (audio.paused) {
+        audio.play();
+        animationContainer.classList.add('animate__animated', 'animate__bounce');
+        playButton.innerText = "Pause";
+      } else {
+        audio.pause();
+        animationContainer.classList.remove('animate__animated', 'animate__bounce');
+        playButton.innerText = "Play";
+      }
+    }
+  </script>
   
   <div class="foot"> 
     <footer class="text-center text-lg-start text-white" style="background-color: #617A55">
@@ -165,64 +166,5 @@
       </div>
     </footer>
   </div>
-
-  <script>
-    function slowScroll(target) {
-      const element = document.querySelector(target);
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    function toggleAnimationAndSound() {
-      const audio = document.getElementById('myAudio');
-      const playButton = document.getElementById('playButton');
-      const animationContainer = document.getElementById('animationContainer');
-
-      if (audio.paused) {
-        audio.play();
-        animationContainer.classList.add('animate__animated', 'animate__bounce');
-        playButton.innerText = "Pause";
-      } else {
-        audio.pause();
-        animationContainer.classList.remove('animate__animated', 'animate__bounce');
-        playButton.innerText = "Play";
-      }
-    }
-
-    // Vulnerable Code: Submitting the form without sanitization
-    document.getElementById('litterae').addEventListener('submit', function (e) {
-      e.preventDefault(); // Prevent form submission
-
-      var nameInput = document.getElementById('name');
-      var messageInput = document.getElementById('message');
-
-      var name = nameInput.value; // Directly use raw input
-      var message = messageInput.value; // Directly use raw input
-
-      // Get the existing messages from local storage or create an empty array
-      var messages = JSON.parse(localStorage.getItem('messages')) || [];
-
-      // Add the new message to the array (no escaping or validation)
-      messages.push({ name: name, message: message });
-
-      // Save the updated messages array to local storage
-      localStorage.setItem('messages', JSON.stringify(messages));
-
-      // Redirect to posts.html (which will potentially display harmful scripts)
-      window.location.href = 'posts.html';
-    });
-
-    // Display messages on posts.html
-    window.onload = function() {
-      var messages = JSON.parse(localStorage.getItem('messages')) || [];
-      var messageContainer = document.getElementById('messageContainer');
-
-      messages.forEach(function(msg) {
-        // Directly append raw HTML, making it vulnerable to XSS
-        var messageElement = document.createElement('div');
-        messageElement.innerHTML = `<strong>${msg.name}:</strong> ${msg.message}`; // No escaping
-        messageContainer.appendChild(messageElement);
-      });
-    };
-  </script>
 </body>
 </html>
